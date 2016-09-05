@@ -1,0 +1,55 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: QR_Image - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSP621F.tmp" with contents
+[
+/nologo /MDd /W4 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /FR"Debug/" /Fp"Debug/QR_Image.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"C:\Users\Administrator\Desktop\QRÂë\c+++QRcode\BottomView.cpp"
+"C:\Users\Administrator\Desktop\QRÂë\c+++QRcode\ImageView.cpp"
+"C:\Users\Administrator\Desktop\QRÂë\c+++QRcode\MainFrm.cpp"
+"C:\Users\Administrator\Desktop\QRÂë\c+++QRcode\QR_Encode.cpp"
+"C:\Users\Administrator\Desktop\QRÂë\c+++QRcode\QR_Image.cpp"
+"C:\Users\Administrator\Desktop\QRÂë\c+++QRcode\RightView.cpp"
+]
+Creating command line "cl.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSP621F.tmp" 
+Creating temporary file "C:\Users\ADMINI~1\AppData\Local\Temp\RSP6220.tmp" with contents
+[
+/nologo /subsystem:windows /incremental:yes /pdb:"Debug/QR_Image.pdb" /debug /machine:I386 /out:"Debug/QR_Image.exe" /pdbtype:sept 
+".\Debug\BottomView.obj"
+".\Debug\ImageView.obj"
+".\Debug\MainFrm.obj"
+".\Debug\QR_Encode.obj"
+".\Debug\QR_Image.obj"
+".\Debug\RightView.obj"
+".\Debug\StdAfx.obj"
+".\Debug\QR_Image.res"
+]
+Creating command line "link.exe @C:\Users\ADMINI~1\AppData\Local\Temp\RSP6220.tmp"
+<h3>Output Window</h3>
+Compiling...
+BottomView.cpp
+QR_Encode.cpp
+Generating Code...
+Compiling...
+ImageView.cpp
+MainFrm.cpp
+QR_Image.cpp
+RightView.cpp
+Generating Code...
+Linking...
+Creating command line "bscmake.exe /nologo /o"Debug/QR_Image.bsc"  ".\Debug\StdAfx.sbr" ".\Debug\BottomView.sbr" ".\Debug\ImageView.sbr" ".\Debug\MainFrm.sbr" ".\Debug\QR_Encode.sbr" ".\Debug\QR_Image.sbr" ".\Debug\RightView.sbr""
+Creating browse info file...
+<h3>Output Window</h3>
+
+
+
+<h3>Results</h3>
+QR_Image.exe - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

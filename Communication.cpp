@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Communication.h"
 #include <iostream>
+#include "Ini.h"
 
 Communication::Communication()
 {
@@ -29,28 +30,29 @@ void ComConnect::InitConfig()
 		printf("SetupComm fail!\n");
 		Close();
 	}
+	CIni ini;
 	COMMTIMEOUTS TimeOuts; //设定读超时
 	TimeOuts.ReadIntervalTimeout = 100;
 
-	TimeOuts.ReadTotalTimeoutMultiplier = 0;
+	TimeOuts.ReadTotalTimeoutMultiplier = 1;
 
-	TimeOuts.ReadTotalTimeoutConstant = 0; //设定写超时
+	TimeOuts.ReadTotalTimeoutConstant = ini.ReadInt(INI_COMDEF, "ReadTimeOut"); //设定写超时
 
 	TimeOuts.WriteTotalTimeoutMultiplier = 1;
 
-	TimeOuts.WriteTotalTimeoutConstant = 1;
+	TimeOuts.WriteTotalTimeoutConstant = ini.ReadInt(INI_COMDEF, "WriteTimeOut");
 
 	SetCommTimeouts(hCom, &TimeOuts); //设置超时
 
 	DCB dcb;
 
-	dcb.BaudRate = 9600;
+	dcb.BaudRate = ini.ReadInt(INI_COMDEF, "BaudRate");
 
-	dcb.ByteSize = 8;
+	dcb.ByteSize = (BYTE)ini.ReadInt(INI_COMDEF, "ByteSize");
 
-	dcb.Parity = 0;
+	dcb.Parity = (BYTE)ini.ReadInt(INI_COMDEF, "Parity");
 
-	dcb.StopBits = 1;
+	dcb.StopBits = (BYTE)ini.ReadInt(INI_COMDEF, "StopBit");
 
 	SetCommState(hCom, &dcb);
 	PurgeComm(hCom, PURGE_TXCLEAR | PURGE_RXCLEAR);
@@ -68,15 +70,31 @@ bool ComConnect::CheckInvalid()
 	return bValid;
 }
 
-void ComConnect::Open()
+bool ComConnect::Open()
 {
 	char ComName[5];
-	memcpy(ComName, "COM2", 4);
-	ComName[sizeof(ComName) - 1] = '\0';
+	CIni ini;
+	if (!ini.ReadString("COMDEF", "com", ComName))
+	{
+		memcpy(ComName, "COM1", 4);
+		ComName[sizeof(ComName) - 1] = '\0';
+	}
+	else
+	{
+		std::string sCom = "COM";
+		sCom.push_back(ComName[0]);
+		strcpy_s(ComName, sCom.c_str());
+	}
+
 	hCom = CreateFile(ComName, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
 	if (!CheckInvalid())
-		return;
+	{
+		AfxMessageBox("打开串口失败,请检查串口设置");
+		return false;
+	}
 	InitConfig();
+	
+	return true;
 }
 
 void ComConnect::Close()
@@ -90,7 +108,6 @@ void ComConnect::Close()
 
 bool ComConnect::Write(void *buffer, size_t len)
 {
-
 	printf("Start Write\n");
 	DWORD wCount = 0;
 	PurgeComm(hCom, PURGE_RXCLEAR);

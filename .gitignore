@@ -3,3 +3,5 @@ ipch/
 ~VCCBFE.tmp
 ~VCCBFF.tmp
 QR_Image.sdf
+Debug/
+QR_Image.opensdf

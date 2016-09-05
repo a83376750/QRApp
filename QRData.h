@@ -211,4 +211,25 @@ struct QRWeixin
 	unsigned char ucEnd;
 	unsigned char ucAuc;
 };//251
+
+struct qrText
+{
+	unsigned char ucStart;
+	unsigned char aucDataLen[2];
+	unsigned char ucTranType;
+	unsigned char data[245];
+	unsigned char ucEnd;
+	unsigned char ucAuc;
+};
 #pragma pack()
+
+void ThreadRead(void *data);
+class QRData
+{
+public:
+	static void QR_NET_HandShake();		//管理 - 握手
+	static void QR_PAY_HandShake();		//交易 - 握手
+	static void QR_PAY_TransAsk();		//交易 - 交易发起
+	static void QR_PAY_DisPlay(void *buffer, int len);	//交易- 二维码显示
+	static void QRTEXT();
+};

@@ -7,7 +7,7 @@ public:
 	Communication();
 	virtual ~Communication();
 
-	virtual void Open() = 0;
+	virtual bool Open() = 0;
 	virtual void Close() = 0;
 	virtual bool Write(void *buffer, size_t len) = 0;
 	virtual DWORD Read(void *buffer, size_t len) = 0;
@@ -20,7 +20,7 @@ public:
 	~ComConnect();
 	void InitConfig();
 	bool CheckInvalid();
-	virtual void Open() override;
+	virtual bool Open() override;
 	virtual void Close() override;
 	virtual bool Write(void *buffer, size_t len) override;
 	virtual DWORD Read(void *buffer, size_t len) override;

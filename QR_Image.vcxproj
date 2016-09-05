@@ -144,6 +144,7 @@
     <ClCompile Include="BottomView.cpp" />
     <ClCompile Include="Communication.cpp" />
     <ClCompile Include="ImageView.cpp" />
+    <ClCompile Include="Ini.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="QRData.cpp" />
     <ClCompile Include="QR_Encode.cpp" />
@@ -158,9 +159,11 @@
     <ResourceCompile Include="QR_Image.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AppFunction.h" />
     <ClInclude Include="BottomView.h" />
     <ClInclude Include="Communication.h" />
     <ClInclude Include="ImageView.h" />
+    <ClInclude Include="Ini.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="QRData.h" />
     <ClInclude Include="QR_Encode.h" />

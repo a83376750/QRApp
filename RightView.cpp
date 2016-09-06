@@ -8,6 +8,8 @@
 #include "RightView.h"
 
 #include "Communication.h"
+#include "QR_Timer.h"
+
 #include <algorithm>
 #include <string>
 
@@ -288,12 +290,21 @@ void CRightView::OnBnClickedButton1()
 	//QRData::QR_PAY_DisPlay((void*)str, strlen((char*)str));
 	//QRData::QR_PAY_HandShake();
 	//QRData::QRTEXT();
+	QR_Timer ti;
+	ti.Start();
+
 	if(QRData::QR_PAY_HandShake())
 		QRData::QR_PAY_TransAsk();
+	ti.Stop();
+	ti.show();
 }
 
 
 void CRightView::OnBnClickedButton3()
 {
+	QR_Timer ti;
+	ti.Start();
 	QRData::QRTEXT();
+	ti.Stop();
+	ti.show();
 }

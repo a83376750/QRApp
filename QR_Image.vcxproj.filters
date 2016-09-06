@@ -45,6 +45,9 @@
     <ClCompile Include="Ini.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="QR_Timer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="QR_Image.rc">
@@ -86,6 +89,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AppFunction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QR_Timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

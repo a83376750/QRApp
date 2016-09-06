@@ -149,6 +149,7 @@
     <ClCompile Include="QRData.cpp" />
     <ClCompile Include="QR_Encode.cpp" />
     <ClCompile Include="QR_Image.cpp" />
+    <ClCompile Include="QR_Timer.cpp" />
     <ClCompile Include="RightView.cpp" />
     <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -168,6 +169,7 @@
     <ClInclude Include="QRData.h" />
     <ClInclude Include="QR_Encode.h" />
     <ClInclude Include="QR_Image.h" />
+    <ClInclude Include="QR_Timer.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="RightView.h" />
     <ClInclude Include="StdAfx.h" />

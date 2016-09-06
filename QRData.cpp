@@ -27,9 +27,11 @@ void ThreadRead(void *data)
 		if (pQRCode[len] == ' ')
 			break;
 	}
+	CString QRCode;
+	QRCode.Append((char*)pQRCode, len);
 
 	CMainFrame *ma = ((CMainFrame*)(AfxGetApp()->m_pMainWnd));
-	ma->ShowQR((char*)pQRCode);
+	ma->ShowQR((char*)QRCode.GetString());
 	delete qr;
 }
 
@@ -163,6 +165,7 @@ bool QRData::QR_PAY_TransAsk()
 	if (!len)
 	{
 		AfxMessageBox("读取交易结果失败");
+		com->Close();
 		return false;
 	}
 	AfxMessageBox((char*)m2p_TransResult.aucTranResult);

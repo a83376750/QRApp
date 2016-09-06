@@ -20,6 +20,7 @@ public:
 	~ComConnect();
 	void InitConfig();
 	bool CheckInvalid();
+	void SetReadTimeout(unsigned int second);
 	virtual bool Open() override;
 	virtual void Close() override;
 	virtual bool Write(void *buffer, size_t len) override;

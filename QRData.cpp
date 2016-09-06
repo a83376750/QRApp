@@ -11,35 +11,34 @@ void ThreadRead(void *data)
 	{
 		return;
 	}
-	bool isOpen = true;
-	unsigned char c_read[512] = "";
+	QRWeixin *qr = new QRWeixin();
+	int len = com->Read(qr, sizeof(QRWeixin));
+	com->Close();
 
-	while (isOpen)
+	if (!len)
 	{
-		memset(c_read, 0, sizeof(c_read));
-		int len = com->Read(c_read, 512);
-		if (len)
-		{
-			isOpen = false;
-		}
+		AfxMessageBox("读取串口失败");
+		return;
 	}
 
-	com->Close();
-	QRWeixin *qr = new QRWeixin();
-	memcpy(qr, c_read, sizeof(QRWeixin));
-
+	unsigned char *pQRCode = qr->aucQR;
+	for (len = 0; len < sizeof(qr->aucQR); ++len)
+	{
+		if (pQRCode[len] == ' ')
+			break;
+	}
 
 	CMainFrame *ma = ((CMainFrame*)(AfxGetApp()->m_pMainWnd));
-	ma->ShowQR((char*)qr->aucQR);
+	ma->ShowQR((char*)pQRCode);
 	delete qr;
 }
 
-void QRData::QR_NET_HandShake()
+bool QRData::QR_NET_HandShake()
 {
-
+	return true;
 }
 
-void QRData::QR_PAY_HandShake()
+bool QRData::QR_PAY_HandShake()
 {
 	QR_Pc2Mid_PAY_HandShake p2mHandShake;
 	p2mHandShake.ucStartFlag = 0x02;
@@ -73,7 +72,7 @@ void QRData::QR_PAY_HandShake()
 	if (!com->Open())
 	{
 		com->Close();
-		return;
+		return false;
 	}
 	for (int i = 0; i < ary.GetSize(); ++i)
 	{
@@ -86,21 +85,22 @@ void QRData::QR_PAY_HandShake()
 	{
 		AfxMessageBox("握手,读取串口失败");
 		com->Close();
-		return;
+		return false;
 	}
 	
 	if (m2pHandShake.ucStartFlag != 0x02)
 	{
 		AfxMessageBox("包有误");
 		com->Close();
-		return;
+		return false;
 	}
 
 	AfxMessageBox("握手,交易结果:成功");
 	com->Close();
+	return true;
 }
 
-void QRData::QR_PAY_TransAsk()
+bool QRData::QR_PAY_TransAsk()
 {
 	QR_Pc2Mid_PAY_TransAsk p2mTransAsk;
 	p2mTransAsk.ucStartFlag = 0x02;
@@ -110,8 +110,8 @@ void QRData::QR_PAY_TransAsk()
 	memset(p2mTransAsk.aucPassword, 0x20, sizeof(p2mTransAsk.aucPassword));
 	p2mTransAsk.aucPayType[0] = 'G';
 	p2mTransAsk.aucPayType[1] = '2';
-	memset(p2mTransAsk.aucAmount, 0x20, sizeof(p2mTransAsk.aucAmount));
-	memset(p2mTransAsk.aucPassword, 0x20, sizeof(p2mTransAsk.aucPassword));
+	memcpy(p2mTransAsk.aucAmount, "000000000001", sizeof(p2mTransAsk.aucAmount));
+	memset(p2mTransAsk.aucPassword, 0x02, sizeof(p2mTransAsk.aucPassword));
 	memset(p2mTransAsk.aucOriginalOrderNo, 0x20, sizeof(p2mTransAsk.aucOriginalOrderNo));
 	memset(p2mTransAsk.aucOriginalTraceNo, 0x20, sizeof(p2mTransAsk.aucOriginalTraceNo));
 	memset(p2mTransAsk.aucQRCode, 0x20, sizeof(p2mTransAsk.aucQRCode));
@@ -125,7 +125,7 @@ void QRData::QR_PAY_TransAsk()
 	if (!com->Open())
 	{
 		com->Close();
-		return;
+		return false;
 	}
 
 	unsigned char *pTransAsk = (unsigned char*)&p2mTransAsk;
@@ -135,17 +135,39 @@ void QRData::QR_PAY_TransAsk()
 	}
 
 	QR_Mid2Pc_PAY_QRCodeDisplay m2pQRCodeDisplay;
-	len = com->Read(&m2pQRCodeDisplay, sizeof(m2pQRCodeDisplay));
+	len = com->Read(&m2pQRCodeDisplay, 357);
 	if (!len)
 	{
-		AfxMessageBox("读取串口失败");
+		AfxMessageBox("交易 - 读取串口失败");
 		com->Close();
-		return;
+		return false;
 	}
 	
 	CMainFrame *ma = ((CMainFrame*)(AfxGetApp()->m_pMainWnd));
-	ma->ShowQR((char*)m2pQRCodeDisplay.aucQRCode);
+	unsigned char *pQRCode = m2pQRCodeDisplay.aucQRCode;
+	for (len = 0; len < sizeof(m2pQRCodeDisplay.aucQRCode); ++len)
+	{
+		if (pQRCode[len] == ' ')
+			break;
+	}
+	CString QRCode;
+	QRCode.Append((char*)pQRCode, len);
+	ma->ShowQR((char*)QRCode.GetString());
+
+	AfxMessageBox("正在刷新二维码");
+
+	com->SetReadTimeout(m2pQRCodeDisplay.ucTimeout);
+
+	QR_Mid2Pc_PAY_TransResult m2p_TransResult;
+	len = com->Read(&m2p_TransResult, sizeof(m2p_TransResult));
+	if (!len)
+	{
+		AfxMessageBox("读取交易结果失败");
+		return false;
+	}
+	AfxMessageBox((char*)m2p_TransResult.aucTranResult);
 	com->Close();
+	return true;
 }
 
 void QRData::QR_PAY_DisPlay(void *buffer, int len)
@@ -199,10 +221,5 @@ void QRData::QRTEXT()
 	}
 	com->Close();
 
-	void(*fun)(void*);
-	fun = ThreadRead;
-	_beginthread(fun, 0, NULL);
-
-	getchar();
-	//memcpy(qr)
+	ThreadRead(NULL);
 }

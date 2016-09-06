@@ -118,15 +118,15 @@ struct QR_Mid2Pc_PAY_HandShake
 	unsigned char	aucTranResult[2];			/*交易结果*/
 	unsigned char	aucInfo[40];				/*信息描述*/
 	unsigned char	aucPayType[2];				/*支付方式*/
-	unsigned char	aucMerchantID[15];			/*商户号,ASCII码*/
 	unsigned char	aucTerminalID[8];			/*终端号,ASCII码*/
-	unsigned char	aucTransAmount[23];			/*交易金额*/
+	unsigned char	aucMerchantID[15];			/*商户号,ASCII码*/
+	unsigned char	aucTransAmount[12];			/*交易金额*/
 	unsigned char	aucCardNo[19];				/*交易卡号*/
 	unsigned char	aucTraceNo[6];				/*流水号*/
 	unsigned char	aucBatchNum[6];				/*批次号*/
 	unsigned char	aucReferenceNum[12];		/*参考号*/
 	unsigned char	aucAuthCode[6];				/*授权号*/
-	unsigned char	aucTransTime[22];			/*交易时间*/
+	unsigned char	aucTransTime[14];			/*交易时间*/
 	unsigned char	aucChannel[32];				/*渠道*/
 	unsigned char	aucAccount[64];				/*账号*/
 	unsigned char	aucOrderInfo[64];			/*订单信息*/
@@ -177,15 +177,15 @@ struct QR_Mid2Pc_PAY_TransResult
 	unsigned char	aucTranResult[2];			/*交易结果*/
 	unsigned char	aucInfo[40];				/*信息描述*/
 	unsigned char	aucPayType[2];				/*支付方式*/
-	unsigned char	aucMerchantID[15];			/*商户号,ASCII码*/
 	unsigned char	aucTerminalID[8];			/*终端号,ASCII码*/
-	unsigned char	aucTransAmount[23];			/*交易金额*/
+	unsigned char	aucMerchantID[15];			/*商户号,ASCII码*/
+	unsigned char	aucTransAmount[12];			/*交易金额*/
 	unsigned char	aucCardNo[19];				/*交易卡号*/
 	unsigned char	aucTraceNo[6];				/*流水号*/
 	unsigned char	aucBatchNum[6];				/*批次号*/
 	unsigned char	aucReferenceNum[12];		/*参考号*/
 	unsigned char	aucAuthCode[6];				/*授权号*/
-	unsigned char	aucTransTime[22];			/*交易时间*/
+	unsigned char	aucTransTime[14];			/*交易时间*/
 	unsigned char	aucChannel[32];				/*渠道*/
 	unsigned char	aucAccount[64];				/*账号*/
 	unsigned char	aucOrderInfo[64];			/*订单信息*/
@@ -227,9 +227,9 @@ void ThreadRead(void *data);
 class QRData
 {
 public:
-	static void QR_NET_HandShake();		//管理 - 握手
-	static void QR_PAY_HandShake();		//交易 - 握手
-	static void QR_PAY_TransAsk();		//交易 - 交易发起
+	static bool QR_NET_HandShake();		//管理 - 握手
+	static bool QR_PAY_HandShake();		//交易 - 握手
+	static bool QR_PAY_TransAsk();		//交易 - 交易发起
 	static void QR_PAY_DisPlay(void *buffer, int len);	//交易- 二维码显示
 	static void QRTEXT();
 };

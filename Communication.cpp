@@ -70,6 +70,14 @@ bool ComConnect::CheckInvalid()
 	return bValid;
 }
 
+void ComConnect::SetReadTimeout(unsigned int second)
+{
+	COMMTIMEOUTS TimeOuts;
+	GetCommTimeouts(hCom, &TimeOuts);
+	TimeOuts.ReadTotalTimeoutConstant = second * 1000; //…Ë∂®–¥≥¨ ±
+	SetCommTimeouts(hCom, &TimeOuts);
+}
+
 bool ComConnect::Open()
 {
 	char ComName[5];

@@ -6,8 +6,8 @@ public:
 	~QR_Timer();
 
 private:
-	long start_time;
-	long pause_time;
+	time_t start_time;
+	time_t pause_time;
 
 	//两个bool值标记四种状态   
 	bool is_pause; //记录计时器的状态 （是否处于暂停状态）  
@@ -20,8 +20,9 @@ public:
 	void Start();
 	void Pause();
 	void Stop();
+	void Clear();
 
-	inline long getStartTime() { return start_time; }
+	inline time_t getStartTime() { return start_time; }
 
 	void show();
 };

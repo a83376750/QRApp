@@ -79,6 +79,7 @@ BEGIN_MESSAGE_MAP(CRightView, CFormView)
 	//}}AFX_MSG_MAP
 	ON_BN_CLICKED(IDC_BUTTON1, &CRightView::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_BUTTON3, &CRightView::OnBnClickedButton3)
+	ON_BN_CLICKED(IDC_BUTTON2, &CRightView::OnBnClickedButton2)
 END_MESSAGE_MAP()
 
 
@@ -290,13 +291,8 @@ void CRightView::OnBnClickedButton1()
 	//QRData::QR_PAY_DisPlay((void*)str, strlen((char*)str));
 	//QRData::QR_PAY_HandShake();
 	//QRData::QRTEXT();
-	QR_Timer ti;
-	ti.Start();
-
 	if(QRData::QR_PAY_HandShake())
 		QRData::QR_PAY_TransAsk();
-	ti.Stop();
-	ti.show();
 }
 
 
@@ -305,6 +301,17 @@ void CRightView::OnBnClickedButton3()
 	QR_Timer ti;
 	ti.Start();
 	QRData::QRTEXT();
+	ti.Stop();
+	ti.show();
+}
+
+
+void CRightView::OnBnClickedButton2()
+{
+	QR_Timer ti;
+	ti.Start();
+	if (QRData::QR_NET_HandShake())
+		QRData::QR_NET_SignIn();
 	ti.Stop();
 	ti.show();
 }

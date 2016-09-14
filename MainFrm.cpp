@@ -101,7 +101,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// 显示最小的尺寸
 	CRect rcWindow;
 	GetWindowRect(&rcWindow);
-	rcWindow.BottomRight() = rcWindow.TopLeft();
+	//rcWindow.BottomRight() = rcWindow.TopLeft();
+	rcWindow.BottomRight() = rcWindow.Width() / 2;
 	MoveWindow(rcWindow);
 
 	m_wndToolBar.EnableDocking(CBRS_ALIGN_ANY);
@@ -119,7 +120,9 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
 	if( !CFrameWnd::PreCreateWindow(cs))
 		return FALSE;
-
+	cs.cx = GetSystemMetrics(SM_CXSCREEN) / 3;
+	cs.cy = GetSystemMetrics(SM_CYSCREEN) / 3;
+	
 	cs.dwExStyle &= ~WS_EX_CLIENTEDGE;
 	cs.lpszClass = AfxRegisterWndClass(0);
 	return TRUE;
@@ -262,14 +265,23 @@ void CMainFrame::OnGetMinMaxInfo(MINMAXINFO FAR* lpMMI)
 	static BOOL bRestore = FALSE; // 从最小化恢复时不处理
 	if (IsWindow(m_wndSplitter1.m_hWnd) && ! bRestore)
 	{
-		CRect rcWindow;
-		GetWindowRect(&rcWindow);
+// 		CRect rcWindow;
+// 		GetWindowRect(&rcWindow);
+// 
+// 		CRect rcClient;
+// 		RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0, reposQuery, &rcClient);
+// 
+// 		lpMMI->ptMinTrackSize.y = m_sizeRightView.cy + m_sizeBottomView.cy + CX_SPLITTER + CX_MARGIN * 2 + (rcWindow.Height() - rcClient.Height());
+// 		lpMMI->ptMinTrackSize.x = m_sizeBottomView.cx + CY_MARGIN * 2 + (rcWindow.Width() - rcClient.Width());
 
-		CRect rcClient;
-		RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0, reposQuery, &rcClient);
+		//调整最小高度与宽度,如果需要的话
+		lpMMI->ptMinTrackSize.x = 640;
+		lpMMI->ptMinTrackSize.y = 480;
+		//调整最大高度与宽度,如果需要的话
+		lpMMI->ptMaxTrackSize.x = 1366;
+		lpMMI->ptMaxTrackSize.y = 768;
 
-		lpMMI->ptMinTrackSize.y = m_sizeRightView.cy + m_sizeBottomView.cy + CX_SPLITTER + CX_MARGIN * 2 + (rcWindow.Height() - rcClient.Height());
-		lpMMI->ptMinTrackSize.x = m_sizeBottomView.cx + CY_MARGIN * 2 + (rcWindow.Width() - rcClient.Width());
+		
 	}
 
 	bRestore = IsIconic();//判断是否最小化

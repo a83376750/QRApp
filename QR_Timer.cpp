@@ -70,9 +70,15 @@ void QR_Timer::Stop()
 	}
 }
 
+void QR_Timer::Clear()
+{
+	start_time = 0;
+	pause_time = 0;
+}
+
 void QR_Timer::show()
 {
-	long t = time(0) - start_time;
+	time_t t = time(0) - start_time;
 	std::stringstream ss;
 	ss << "ÏûºÄÊ±¼ä:" << std::setw(2) << std::setfill('0') << t / 60 / 60 << ":"
 		<< std::setw(2) << std::setfill('0') << t / 60 << ":"

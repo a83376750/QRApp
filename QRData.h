@@ -228,6 +228,7 @@ class QRData
 {
 public:
 	static bool QR_NET_HandShake();		//管理 - 握手
+	static bool QR_NET_SignIn();
 	static bool QR_PAY_HandShake();		//交易 - 握手
 	static bool QR_PAY_TransAsk();		//交易 - 交易发起
 	static void QR_PAY_DisPlay(void *buffer, int len);	//交易- 二维码显示

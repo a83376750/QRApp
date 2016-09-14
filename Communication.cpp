@@ -145,7 +145,7 @@ bool ComConnect::Write(void *buffer, size_t len)
 
 DWORD ComConnect::Read(void *buffer, size_t len)
 {
-	//Sleep(2000);
+	Sleep(2000);
 
 	printf("Start Read\n");
 	DWORD wCount = 0;

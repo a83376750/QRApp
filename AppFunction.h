@@ -43,48 +43,7 @@ int Str2Hex(CString str, CByteArray &data)
 	return rlen;
 }
 
-char ConvertHexData(char ch)
-{
-	if ((ch >= '0') && (ch <= '9'))
-		return ch - 0x30;
-	if ((ch >= 'A') && (ch <= 'F'))
-		return ch - 'A' + 10;
-	if ((ch >= 'a') && (ch <= 'f'))
-		return ch - 'a' + 10;
-	else return(-1);
-}
 
-int String2Hex(CString str, char *SendOut)
-{
-	int hexdata, lowhexdata;
-	int hexdatalen = 0;
-	int len = str.GetLength();
-	//SendOut.SetSize(len/2);
-	for (int i = 0; i < len;)
-	{
-		char lstr, hstr = str[i];
-		if (hstr == ' ' || hstr == '\r' || hstr == '\n')
-		{
-			i++;
-			continue;
-		}
-		i++;
-		if (i >= len)
-			break;
-		lstr = str[i];
-		hexdata = ConvertHexData(hstr);
-		lowhexdata = ConvertHexData(lstr);
-		if ((hexdata == 16) || (lowhexdata == 16))
-			break;
-		else
-			hexdata = hexdata * 16 + lowhexdata;
-		i++;
-		SendOut[hexdatalen] = (char)hexdata;
-		hexdatalen++;
-	}
-	//senddata.SetSize(hexdatalen);
-	return hexdatalen;
-}
 
 int bcd_ToUInt(unsigned char *buffer)
 {
@@ -136,20 +95,6 @@ unsigned char LRCBuffer(void *buffer)
 	return nOr;
 }
 
-unsigned long HextoDec(const unsigned char *hex, int length)
-{
-	int i;
-	unsigned long rslt = 0;
-
-	for (i = 0; i < length; i++)
-	{
-		rslt += (unsigned int)(hex[i]) << (8 * (length - 1 - i));
-
-	}
-
-	return rslt;
-}
-
 int DectoBCD(int Dec, unsigned char *Bcd, int length)
 {
 	int i;
@@ -158,7 +103,7 @@ int DectoBCD(int Dec, unsigned char *Bcd, int length)
 	for (i = length - 1; i >= 0; i--)
 	{
 		temp = Dec % 100;
-		Bcd[i] = ((temp / 10) << 4) + ((temp % 10) & 0x0F);
+		Bcd[i] = static_cast<unsigned char>(((temp / 10) << 4) + ((temp % 10) & 0x0F));
 		Dec /= 100;
 	}
 
